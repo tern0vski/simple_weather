@@ -1,0 +1,63 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.kageiit.lintrules'
+
+android {
+  compileSdkVersion versions.compileSdk
+  buildToolsVersion versions.buildTools
+
+  defaultConfig {
+    minSdkVersion versions.minSdk
+
+    consumerProguardFiles 'proguard-rules.txt'
+
+    testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+
+    javaCompileOptions {
+      annotationProcessorOptions {
+        includeCompileClasspath = true
+      }
+    }
+  }
+
+  lintOptions {
+    textReport true
+    textOutput 'stdout'
+    // We run a full lint analysis as build part in CI, so skip vital checks for assemble tasks.
+    checkReleaseBuilds false
+  }
+}
+
+dependencies {
+  api project(':butterknife-annotations')
+  implementation deps.support.annotations
+  api deps.support.compat
+
+  lintRules project(':butterknife-lint')
+
+  androidTestImplementation deps.junit
+  androidTestImplementation deps.truth
+  androidTestImplementation deps.support.test.runner
+
+  testImplementation deps.junit
+  testImplementation deps.truth
+  testImplementation deps.compiletesting
+  testImplementation files(getRuntimeJar())
+  testImplementation files(org.gradle.internal.jvm.Jvm.current().getToolsJar())
+  testImplementation project(':butterknife-compiler')
+}
+
+def getRuntimeJar() {
+  try {
+    final File javaBase = new File(System.getProperty("java.home")).getCanonicalFile();
+    File runtimeJar = new File(javaBase, "lib/rt.jar");
+    if (runtimeJar.exists()) {
+      return runtimeJar;
+    }
+    runtimeJar = new File(javaBase, "jre/lib/rt.jar");
+    return runtimeJar.exists() ? runtimeJar : null;
+  } catch (IOException e) {
+    throw new RuntimeException(e);
+  }
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

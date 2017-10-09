@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/day_of_week"
+        style="@style/MainFont"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="Thu"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/time"
+        style="@style/MainFont"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="6:00"
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/hourly_weather_icon"
+        android:layout_width="60dp"
+        android:layout_height="15dp"
+        android:gravity="center"
+        android:src="@drawable/sun" />
+
+    <TextView
+        android:id="@+id/temperature"
+        style="@style/MainFont"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="10&#xb0;"
+        android:textColor="@android:color/white"
+        android:textSize="20sp" />
+
+
+</LinearLayout>

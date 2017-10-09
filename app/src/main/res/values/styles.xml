@@ -1,0 +1,62 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#282828</item>
+        <item name="colorPrimaryDark">#1C1C1C</item>
+        <item name="colorAccent">#817D7D</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorControlNormal">@android:color/white</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CurrentTemperature" parent="WeatherTextStyle">
+        <item name="android:textSize">110sp</item>
+    </style>
+
+    <style name="CurrentCity" parent="WeatherTextStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CurrentDay" parent="WeatherTextStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CurrentTemperatureSign" parent="WeatherTextStyle">
+        <item name="android:textSize">80sp</item>
+    </style>
+
+    <style name="CurrentWeatherSummary" parent="WeatherTextStyle">
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="CurrentWindSpeed" parent="WeatherTextStyle">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="CurrentDayMinMaxTemperature" parent="WeatherTextStyle">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="WeatherTextStyle" parent="MainFont">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:shadowDx">2</item>
+        <item name="android:shadowDy">2</item>
+        <item name="android:shadowRadius">1.6</item>
+        <item name="android:shadowColor">@android:color/black</item>
+    </style>
+
+    <style name="MainFont">
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="TextStyle" parent="MainFont">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+</resources>
