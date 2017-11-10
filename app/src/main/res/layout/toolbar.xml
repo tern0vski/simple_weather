@@ -8,7 +8,7 @@
     android:background="@android:color/transparent"
     app:layout_collapseMode="pin"
     app:popupTheme="@style/AppTheme.PopupOverlay"
-    tools:context=".ui.MainActivity">
+    tools:context=".activities.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,22 +23,10 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/current_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-thin"
-                android:paddingLeft="5dp"
-                android:paddingTop="5dp"
-                android:shadowColor="@android:color/black"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="1.6"
-                android:text="Dnipro" />
-
-            <TextView
                 android:id="@+id/current_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
                 android:fontFamily="sans-serif-thin"
                 android:paddingLeft="5dp"
                 android:paddingTop="4dp"

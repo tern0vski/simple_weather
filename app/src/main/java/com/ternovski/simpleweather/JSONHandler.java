@@ -127,5 +127,9 @@ public class JSONHandler {
     public abstract static class ParseResult {
         public void onResult(JSONHandler jsonHandler) {
         }
+
+        public void onError(){
+
+        }
     }
 }

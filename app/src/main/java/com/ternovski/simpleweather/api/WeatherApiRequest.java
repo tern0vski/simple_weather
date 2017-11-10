@@ -58,13 +58,18 @@ public class WeatherApiRequest {
                     result.append(line);
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
             return result.toString();
         }
 
         @Override
         protected void onPostExecute(String requestResult) {
-            new JSONHandler(requestResult, onResult);
+            if (requestResult != null) {
+                new JSONHandler(requestResult, onResult);
+            } else {
+                onResult.onError();
+            }
             saveLatestWeather(requestResult);
         }
 

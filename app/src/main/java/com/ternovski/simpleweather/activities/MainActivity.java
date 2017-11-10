@@ -1,4 +1,4 @@
-package com.ternovski.simpleweather.ui;
+package com.ternovski.simpleweather.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +24,8 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,6 +83,12 @@ public class MainActivity extends AppCompatActivity {
     TextView mCurrentTemperatureToolbar;
     @BindView(R.id.weather_chart_view)
     LineView mWeatherChart;
+    @BindView(R.id.layout_progressbar)
+    RelativeLayout mLayoutProgressBar;
+    @BindView(R.id.layout_content)
+    CoordinatorLayout mLayoutContent;
+    @BindView(R.id.progress_bar)
+    ProgressBar mProgressBar;
 
     @BindView(R.id.sun_seekbar)
     SeekBar mSunSeekbar;
@@ -118,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUI() {
+
+        mProgressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FFF"),
+                android.graphics.PorterDuff.Mode.MULTIPLY);
 
         ViewTreeObserver vto = mSunSeekbar.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -181,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void currentLocation(Location location) {
             WeatherApiRequest.makeRequest(location, mContext, parseResult);
+            mLayoutContent.setVisibility(View.GONE);
+            mLayoutProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -195,6 +209,14 @@ public class MainActivity extends AppCompatActivity {
             super.onResult(jsonHandler);
             mJsonHandler = jsonHandler;
             updateUI();
+            mLayoutContent.setVisibility(View.VISIBLE);
+            mLayoutProgressBar.setVisibility(View.GONE);
+        }
+
+        @Override
+        public void onError(){
+            mLayoutContent.setVisibility(View.VISIBLE);
+            mLayoutProgressBar.setVisibility(View.GONE);
         }
     };
 
@@ -251,21 +273,20 @@ public class MainActivity extends AppCompatActivity {
         mSunsetTime.setText(DateFormatUtil.convertUnixTime(DATE_FORMAT_HH_MM, (Long) hourlyWeather.get(WeatherConstants.SUNSET)));
     }
 
-    private void setBackgroundImage(String weatherIcon){
+    private void setBackgroundImage(String weatherIcon) {
         if (weatherIcon.equals("clear-day")) {
             mCurrentWeatherBackgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.sunny));
             mCurrentWeatherIcon.setImageDrawable(getResources().getDrawable(R.drawable.sun));
             mCurrentWeatherIconToolbar.setImageDrawable(getResources().getDrawable(R.drawable.sun));
-        }else if(weatherIcon.equals("clear-night")){
+        } else if (weatherIcon.equals("clear-night")) {
             try {
                 mCurrentWeatherBackgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.clear_night));
                 mCurrentWeatherIcon.setImageDrawable(getResources().getDrawable(R.drawable.sun));
                 mCurrentWeatherIconToolbar.setImageDrawable(getResources().getDrawable(R.drawable.sun));
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        else if (weatherIcon.equals("rain") || weatherIcon.equals("snow") || weatherIcon.equals("sleet")) {
+        } else if (weatherIcon.equals("rain") || weatherIcon.equals("snow") || weatherIcon.equals("sleet")) {
             mCurrentWeatherBackgroundImage.setImageDrawable(getResources().getDrawable(R.drawable.rainy));
             mCurrentWeatherIcon.setImageDrawable(getResources().getDrawable(R.drawable.rain));
             mCurrentWeatherIconToolbar.setImageDrawable(getResources().getDrawable(R.drawable.rain));
