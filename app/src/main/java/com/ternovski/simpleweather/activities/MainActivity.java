@@ -94,8 +94,8 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.sunrise_icon)
     ImageView mSunriseIcon;
 
-    private static final String DATE_FORMAT = "EEEE";
     private static final String DIGIT_SYMBOL = "°";
+    private static final String DATE_FORMAT = "EEEE";
     private final static String DATE_FORMAT_HH_MM = "kk:mm";
 
     private Context mContext;
