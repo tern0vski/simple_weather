@@ -33,8 +33,7 @@
                 android:shadowColor="@android:color/black"
                 android:shadowDx="2"
                 android:shadowDy="2"
-                android:shadowRadius="1.6"
-                android:text="monday" />
+                android:shadowRadius="1.6" />
 
         </LinearLayout>
 

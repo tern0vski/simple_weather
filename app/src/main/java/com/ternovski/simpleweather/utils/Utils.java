@@ -19,7 +19,4 @@ public class Utils {
         return position;
     }
 
-    public static void isNight(){
-
-    }
 }

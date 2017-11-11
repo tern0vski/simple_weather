@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,20 +23,18 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ternovski.simpleweather.AppBarStateChangeListener;
 import com.ternovski.simpleweather.JSONHandler;
+import com.ternovski.simpleweather.LocationFinder;
 import com.ternovski.simpleweather.R;
 import com.ternovski.simpleweather.WeatherConstants;
 import com.ternovski.simpleweather.adapters.RecycleViewAdapter;
 import com.ternovski.simpleweather.api.WeatherApiRequest;
 import com.ternovski.simpleweather.utils.DateFormatUtil;
-import com.ternovski.simpleweather.utils.LocationUtil;
 import com.ternovski.simpleweather.utils.Utils;
 
 import java.util.ArrayList;
@@ -83,12 +80,6 @@ public class MainActivity extends AppCompatActivity {
     TextView mCurrentTemperatureToolbar;
     @BindView(R.id.weather_chart_view)
     LineView mWeatherChart;
-    @BindView(R.id.layout_progressbar)
-    RelativeLayout mLayoutProgressBar;
-    @BindView(R.id.layout_content)
-    CoordinatorLayout mLayoutContent;
-    @BindView(R.id.progress_bar)
-    ProgressBar mProgressBar;
 
     @BindView(R.id.sun_seekbar)
     SeekBar mSunSeekbar;
@@ -127,10 +118,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUI() {
-
-        mProgressBar.getIndeterminateDrawable().setColorFilter(Color.parseColor("#FFF"),
-                android.graphics.PorterDuff.Mode.MULTIPLY);
-
         ViewTreeObserver vto = mSunSeekbar.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             public boolean onPreDraw() {
@@ -184,17 +171,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            LocationUtil locationUtil = new LocationUtil(this, currentLocationListener);
-            locationUtil.getCurrentLocation();
+            LocationFinder locationFinder = new LocationFinder(this, currentLocationListener);
+            locationFinder.getCurrentLocation();
         }
     }
 
-    LocationUtil.CurrentLocationListener currentLocationListener = new LocationUtil.CurrentLocationListener() {
+    LocationFinder.CurrentLocationListener currentLocationListener = new LocationFinder.CurrentLocationListener() {
         @Override
         public void currentLocation(Location location) {
             WeatherApiRequest.makeRequest(location, mContext, parseResult);
-            mLayoutContent.setVisibility(View.GONE);
-            mLayoutProgressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -209,14 +194,11 @@ public class MainActivity extends AppCompatActivity {
             super.onResult(jsonHandler);
             mJsonHandler = jsonHandler;
             updateUI();
-            mLayoutContent.setVisibility(View.VISIBLE);
-            mLayoutProgressBar.setVisibility(View.GONE);
         }
 
         @Override
-        public void onError(){
-            mLayoutContent.setVisibility(View.VISIBLE);
-            mLayoutProgressBar.setVisibility(View.GONE);
+        public void onError() {
+            Toast.makeText(mContext, "Unable to update data", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -246,8 +228,6 @@ public class MainActivity extends AppCompatActivity {
         mCurrentDayMinTemperature.setText("min :" + " " + String.valueOf(result.get(WeatherConstants.TEMPERATURE_MIN)) + DIGIT_SYMBOL);
         mCurrentDayMaxTemperature.setText("max :" + " " + String.valueOf(result.get(WeatherConstants.TEMPERATURE_MAX)) + DIGIT_SYMBOL);
         mCurrentWindSpeed.setText("wind " + String.valueOf(result.get(WeatherConstants.WIND_SPEED)) + " k/h");
-
-        String weatherIcon = String.valueOf(result.get(WeatherConstants.ICON));
 
         RecycleViewAdapter recycleViewAdapter = new RecycleViewAdapter(mJsonHandler.getHourlyWeather(), mContext);
         mHourlyWeatherRecycle.setAdapter(recycleViewAdapter);

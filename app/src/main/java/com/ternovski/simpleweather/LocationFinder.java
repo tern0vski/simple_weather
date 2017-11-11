@@ -1,4 +1,4 @@
-package com.ternovski.simpleweather.utils;
+package com.ternovski.simpleweather;
 
 import android.Manifest;
 import android.content.Context;
@@ -13,13 +13,13 @@ import android.support.v4.app.ActivityCompat;
  * Created by Vadim on 2017.
  */
 
-public class LocationUtil {
+public class LocationFinder {
 
     private Context mContext;
     private CurrentLocationListener mCurrentLocationListener;
     private Location mLastKnownLocation;
 
-    public LocationUtil(Context mContext, CurrentLocationListener mCurrentLocationListener) {
+    public LocationFinder(Context mContext, CurrentLocationListener mCurrentLocationListener) {
         this.mContext = mContext;
         this.mCurrentLocationListener = mCurrentLocationListener;
     }

@@ -128,7 +128,7 @@ public class JSONHandler {
         public void onResult(JSONHandler jsonHandler) {
         }
 
-        public void onError(){
+        public void onError() {
 
         }
     }
